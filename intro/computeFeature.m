@@ -34,3 +34,5 @@ function [feature] = computeFeature(x, y, goal, obstacle, proportion)
     sita2 = GetAngle([x y], [mx my]);
     feature = [feature sita2];
 end
+
+% may want to deal with proportion, so distance more precise
