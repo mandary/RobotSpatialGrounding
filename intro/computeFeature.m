@@ -1,7 +1,7 @@
 
 % return a list of features value of the (x, y) point
 % [d to goal, d to nearest obstacle, a to goal, a to obstacle, ]
-function [feature] = computeFeature(x, y, goal, obstacle, proportion)
+function [feature] = computeFeature(x, y, goal, obstacle)
     feature = [];
     
     % compute d to goal
