@@ -4,7 +4,7 @@ function dataCollector(n, width, height, obstacle, filename, data)
     % randomized map
     % [A] = map(width, height, obstacle, filename);
     % map from sampleMap
-    load('sampleMap');
+    load('data/sampleMap');
     for i = 1:n
         [n, m] = plotonfig(A, goal, proportion);
         [xcon, ycon, xx, yy] = curving(n, m);
