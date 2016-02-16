@@ -18,4 +18,5 @@ function result = computeCostMap(width, height, weights, goal, object, matrix)
     plot(0, 0);
     hold on;
     imagesc(result);
+    save('data/result', 'result');
 end
