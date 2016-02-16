@@ -11,8 +11,8 @@ function weights = learch(lr, iteration)
     sampleFeatureList = buildList(xx, yy, goal, object);
     sampleCost = aggregator(weights,sampleFeatureList);
     planCost = Inf;
-    while sampleCost ~= planCost
-        %for sample = 1:n
+    %while sampleCost ~= planCost
+    for sample = 1:10
             costmap = computeCostMap(width, height, weights, goal, object, A);
             % plan path from costmap
             [xp, yp, planCost] = Dijkstra(costmap, start);
