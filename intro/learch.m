@@ -8,19 +8,20 @@ function weights = learch(lr, iteration)
     % weights
      weights = [1, 1, 1, 1];
     % might want to switch xx, yy with xcon, ycon pair
+    featureMap = computeFeatureMap(width, height, goal, object, A);
     sampleFeatureList = buildList(xx, yy, goal, object);
     sampleCost = aggregator(weights,sampleFeatureList);
     planCost = Inf;
-    %while sampleCost ~= planCost
-    for sample = 1:10
-            costmap = computeCostMap(width, height, weights, goal, object, A);
+    for iter = 1:iteration
+        %for sample = 1:10
+            costmap = computeCostMap(width, height, weights, featureMap);
             % plan path from costmap
             [xp, yp, planCost] = Dijkstra(costmap, start);
             planFeatureList = buildList(xp, yp, goal, object);
             % update weights
             if planCost < sampleCost
                 error = sampleCost - planCost;
-                weights = computeError(weights, planFeatureList, lr, error);
+                weights = computeError(weights, planFeatureList, sampleFeatureList, lr, error);
             end
             sampleCost = aggregator(weights, sampleFeatureList);
             planCost = aggregator(weights, planFeatureList);
