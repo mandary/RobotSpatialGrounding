@@ -4,4 +4,5 @@ function result = GetAngle(p1, p2)
    if ~isreal(result)
        result = 0;
    end
+   result = result + pi;
 end
