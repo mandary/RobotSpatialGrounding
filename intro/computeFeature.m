@@ -1,6 +1,7 @@
 
 % return a list of features value of the (x, y) point
 % [d to goal, d to nearest obstacle, a to goal, a to obstacle, ]
+% feature value range from 0 to 100
 function [feature] = computeFeature(x, y, goal, obstacle)
     feature = [];
     
@@ -25,14 +26,15 @@ function [feature] = computeFeature(x, y, goal, obstacle)
         end
     end
     feature = [feature mind];
-    
-    % Compute a to goal
-    sita = GetAngle([x y], [xcor ycor]);
-    feature = [feature sita];
-    
+%     
+%     % Compute a to goal
+%     sita = GetAngle([x y], [xcor ycor]);
+%     feature = [feature sita];
+%     
     % Compute a to nearest obstacle
     sita2 = GetAngle([x y], [mx my]);
     feature = [feature sita2];
+    
+    % Constant feature for number of steps
+    feature = [feature 1];
 end
-
-% may want to deal with proportion, so distance more precise

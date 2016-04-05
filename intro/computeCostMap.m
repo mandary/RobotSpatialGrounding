@@ -1,5 +1,5 @@
 
-function result = computeCostMap(width, height, weights, featuremap, matrix)
+function result = computeCostMap(width, height, weights, featuremap)
 %     result(1:height, 1:width) = 0;
 %     for i = 1:height
 %         for j = 1:width
@@ -16,14 +16,10 @@ function result = computeCostMap(width, height, weights, featuremap, matrix)
     for i = 1:height
         for j = 1:width
             sum = 0;
-            for k = 1:4
-                sum = sum + featuremap(i, j, k) * exp(weights(k));
+            for k = 1:size(weights, 2)
+                sum = sum + featuremap(i, j, k) * weights(k);
             end
-%             if matrix(i, j) == -100
-%                 result(i, j) = -100;
-%             else
-                result(i, j) = sum;
-%             end
+            result(i, j) = sum;
         end
     end
 end
