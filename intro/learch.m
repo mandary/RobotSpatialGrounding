@@ -7,14 +7,21 @@ function weights = learch(lr, iteration)
     load('data/path1.mat');
     % weights
     weights = [1, 1, 1, 1];
-    % might want to switch xx, yy with xcon, ycon pair
-    featureMap = computeFeatureMap(width, height, goal, object, A);
-    sampleFeatureList = buildList(xx, yy, goal, object);
+    % compute feature map, number of features is always 1 less because of
+    % the constant feature
+    featureMap = computeFeatureMap(width, height, goal, object, size(weights, 2) - 1);
+    % descretize line by bresenham's
+    [xs, ys] = descretize(xx, yy);
+    % compute loss map
+    lossMap = computeLossMap(width, height, xs, ys);
+    % build sample path's feature list
+    sampleFeatureList = buildList(xs, ys, featureMap);
     sampleCost = aggregator(weights,sampleFeatureList);
     planCost = Inf;
     for iter = 1:iteration
         %for sample = 1:10
-            costmap = computeCostMap(width, height, weights, featureMap, A);
+            costmap = computeCostMap(width, height, weights, featureMap);
+            costmap = lossAug(xx, yy, costmap, lossMap);
             figure(100);
             hold on;
             plot(0,0);
@@ -35,7 +42,8 @@ function weights = learch(lr, iteration)
             disp(weights);
             % plan path from costmap
             [xp, yp, planCost] = Dijkstra(costmap, start, goal, proportion);
-            planFeatureList = buildList(xp, yp, goal, object);
+            [xp, yp] = descretize(xp, yp);
+            planFeatureList = buildList(xp, yp, featureMap);
             % update weights
             if planCost ~= sampleCost
                 weights = computeError(weights, planFeatureList, sampleFeatureList, lr, 0.1);
