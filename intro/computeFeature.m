@@ -32,8 +32,8 @@ function [feature] = computeFeature(x, y, goal, obstacle)
 %     feature = [feature sita];
 %     
     % Compute a to nearest obstacle
-    sita2 = GetAngle([x y], [mx my]);
-    feature = [feature sita2];
+%     sita2 = GetAngle([x y], [mx my]);
+%     feature = [feature sita2];
     
     % Constant feature for number of steps
     feature = [feature 1];
