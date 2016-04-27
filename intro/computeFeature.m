@@ -5,11 +5,11 @@
 function [feature] = computeFeature(x, y, goal, obstacle)
     feature = [];
     
-    % compute d to goal
-    xcor = goal{1, 1};
-    ycor = goal{1, 2};
-    dg = sqrt((xcor - x).^2 + (ycor - y).^2);
-    feature = [feature dg];
+%     % compute d to goal
+%     xcor = goal{1, 1};
+%     ycor = goal{1, 2};
+%     dg = sqrt((xcor - x).^2 + (ycor - y).^2);
+%     feature = [feature dg];
     
     % compute d to nearest obstacle
     mind = Inf;
