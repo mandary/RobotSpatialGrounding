@@ -28,10 +28,10 @@ function [n, m] =  plotonfig(A, goal, offset)
             % graph the line
             line(start, goal, 'Color', 'r');
             % sample points
-            [xs, ys] = fillline([p1, p2], [x, y], 5);
+           % [xs, ys] = fillline([p1, p2], [x, y], 5);
             % append points
-            n = [n xs];
-            m = [m ys];
+            n = [n x];
+            m = [m y];
         end
         p1 = x;
         p2 = y;

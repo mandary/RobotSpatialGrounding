@@ -1,6 +1,7 @@
 % Dijkstra in costmap 
 function [xp, yp] = Dijkstra(costmap, start, goal, proportion)
-    working = table();
+    working = [];
+    workingcost = [];
     hi = size(costmap, 1);
     wi = size(costmap, 2);
     visited = zeros(hi, wi);
@@ -10,9 +11,10 @@ function [xp, yp] = Dijkstra(costmap, start, goal, proportion)
     sx = start{1, 1};
     y = sy;
     x = sx;
-    working = [working; table(y, x)];
-    path(sy, sx) = sy * wi + sx;
-    cost(sy, sx) = costmap(sy, sx);
+    working = [working sub2ind(size(path), y, x)];
+    workingcost = [workingcost costmap(y, x)];
+    path(sy, sx) = sub2ind(size(path), y, x);
+    cost(sy, sx) = costmap(y, x);
     xp = [];
     yp = [];
     
@@ -21,18 +23,12 @@ function [xp, yp] = Dijkstra(costmap, start, goal, proportion)
         % traverse working table, pop the smallest cost element
         tempy = 0;
         tempx = 0;
-        mincost = Inf;
-        minindex = 1;
-        for i = 1:size(working, 1)
-            if cost(working{i, 1}, working{i, 2}) < mincost
-                tempy = working{i, 1};
-                tempx = working{i, 2};
-                mincost = cost(tempy, tempx);
-                minindex = i;
-            end
-        end
+        [sortedcost, sortedindex] = sort(workingcost);
+        minIndex = sortedindex(1);
+        [tempy, tempx] = ind2sub(size(path), working(minIndex));
         % conventional pop
-        working(minindex, :) = [];
+        working(minIndex) = [];
+        workingcost(minIndex) = [];
         % find the goal
         if isGoal(tempx, tempy, goal, proportion)
             %backtrack
@@ -45,13 +41,23 @@ function [xp, yp] = Dijkstra(costmap, start, goal, proportion)
             % for each neighbor
             for x = tempx:tempx+1
                 for y = tempy:tempy+1
+                    
                     if x <= wi && y <= hi && ~visited(y, x)
-                        working = [working; table(y, x)];
+                        linInd = sub2ind(size(path), y, x);
+                        index = find(working == linInd);
+                         
                         c1 = cost(tempy, tempx) + costmap(y, x);
                         c2 = cost(y, x);
                         if c1 < c2
+                            if index
+                                workingcost(index) = c1;
+                            end
                             cost(y, x) = c1;
                             path(y, x) = sub2ind(size(path), tempy, tempx);
+                        end
+                        if isempty(index)
+                            working = [working linInd];
+                            workingcost = [workingcost cost(y,x)];
                         end
                     end
                 end
